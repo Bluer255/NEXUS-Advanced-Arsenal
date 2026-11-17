@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+tools/preview_sheet.png
+# результати локальних тестів
+test/
+*.zip
+.DS_Store
+Thumbs.db

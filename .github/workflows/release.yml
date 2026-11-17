@@ -1,0 +1,52 @@
+# Реліз за тегом: git tag v0.3.0 && git push origin v0.3.0
+# Тег має збігатися з "version" у mod.hjson. У назву релізу додається [v160]:
+# за цим тегом мод-браузер Mindustry підбирає реліз під збірку гри 160.x.
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: Install tool dependencies
+        run: pip install -r tools/requirements.txt
+
+      - name: Check that the tag matches the version in mod.hjson
+        run: |
+          VERSION=$(grep -E '^version:' mod.hjson | sed -E 's/^version:[[:space:]]*"?([^"]+)"?.*/\1/')
+          if [ "v$VERSION" != "$GITHUB_REF_NAME" ]; then
+            echo "Tag $GITHUB_REF_NAME does not match mod.hjson version v$VERSION"
+            exit 1
+          fi
+
+      - name: Validate and test
+        run: |
+          python tools/validate.py
+          bash tools/ci_load_test.sh
+
+      - name: Build installable zip
+        run: zip -qr "NEXUS-Advanced-Arsenal-${GITHUB_REF_NAME}.zip" mod.hjson content sprites bundles icon.png preview.png
+
+      - name: Publish release
+        uses: softprops/action-gh-release@v3
+        with:
+          name: "NEXUS: Advanced Arsenal ${{ github.ref_name }} [v160]"
+          files: NEXUS-Advanced-Arsenal-*.zip
+          generate_release_notes: true

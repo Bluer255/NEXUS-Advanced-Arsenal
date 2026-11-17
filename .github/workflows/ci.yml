@@ -1,0 +1,31 @@
+# Перевірка на кожен push/PR: текстури <-> hjson <-> локалізації + завантаження в сервері Mindustry v160.4.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: Install tool dependencies
+        run: pip install -r tools/requirements.txt
+
+      - name: Validate textures, sizes and localization keys
+        run: python tools/validate.py
+
+      - name: Load the mod in a headless Mindustry server and run fire test
+        run: bash tools/ci_load_test.sh

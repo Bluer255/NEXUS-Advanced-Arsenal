@@ -1,0 +1,10 @@
+# Єдині переноси рядків (LF) для текстових файлів мода
+*.hjson text eol=lf
+*.json text eol=lf
+*.properties text eol=lf
+*.py text eol=lf
+*.sh text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+# Спрайти - бінарні
+*.png binary

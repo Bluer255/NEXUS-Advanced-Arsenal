@@ -1,0 +1,11 @@
+# NEXUS: Advanced Arsenal - метадані моду (Mindustry v8, Build 160+).
+# Правила мод-браузера: mod.hjson у корені репозиторію, minGameVersion >= 136,
+# тема репозиторію "mindustry-mod". subtitle - не довше 40 символів.
+name: "nexus-arsenal"
+displayName: "NEXUS: Advanced Arsenal"
+subtitle: "Original turrets pack"
+author: "Bluer255"
+# Версія - semver (X.Y.Z). Збільшуйте її при кожному релізі: за нею гра шукає оновлення.
+version: "0.3.0"
+minGameVersion: "160"
+description: "A collection of original turrets with custom mechanics, effects and pixel art: Volt (chain lightning), Frostbite (freezing, extinguishes fires), Titan (heavy armor-piercing cannon). More turrets coming."

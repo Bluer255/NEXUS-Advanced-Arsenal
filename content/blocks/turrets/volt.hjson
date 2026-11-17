@@ -1,0 +1,72 @@
+# NEXUS Volt - електрична турель. Куля-"орб" при влученні розпадається на 3 дуги блискавки,
+# які б'ють по сусідніх ворогах (ланцюговий ефект). Тир 1.
+type: PowerTurret
+name: "NEXUS Volt"
+description: "Fires charged orbs that arc lightning between nearby enemies."
+category: turret
+requirements: ["copper/80", "lead/100", "silicon/60", "metaglass/20"]
+research: { parent: arc }
+size: 2
+scaledHealth: 220
+range: 144
+reload: 30
+rotateSpeed: 9
+shootCone: 25
+inaccuracy: 2
+recoil: 1.5
+recoilTime: 24
+shootY: 7
+shake: 0.5
+targetAir: true
+targetGround: true
+shootSound: shootArc
+heatColor: "5cc8ff"
+coolantMultiplier: 20
+consumes: {
+    power: 4
+    coolant: { amount: 0.1 }
+}
+shootEffect: [
+    lightningShoot
+    {
+        particles: 7, line: true, length: 30, baseLength: 2, lifetime: 16, cone: 40
+        strokeFrom: 2, strokeTo: 0, lenFrom: 7, lenTo: 1
+        colorFrom: "ffffff", colorTo: "4fc3ff"
+    }
+]
+shootType: {
+    type: BasicBulletType
+    speed: 8
+    damage: 14
+    lifetime: 18
+    width: 8
+    height: 8
+    backColor: "4fc3ff"
+    frontColor: "eaffff"
+    trailColor: "4fc3ff"
+    trailLength: 9
+    trailWidth: 1.8
+    status: shocked
+    statusDuration: 120
+    hitColor: "7fd8ff"
+    hitEffect: hitLancer
+    despawnEffect: hitLancer
+    # 3 "корені" блискавки по 11 ланок, шкода кожної - 16
+    lightning: 3
+    lightningLength: 11
+    lightningDamage: 16
+    lightningColor: "7fd8ff"
+    ammoMultiplier: 1
+}
+drawer: {
+    type: DrawTurret
+    parts: [
+        # Дві сталеві котушки по боках: розсуваються при розігріві
+        { type: RegionPart, suffix: "-coil", x: 3.5, y: 0, moveX: 0.6, progress: warmup, heatProgress: heat, heatColor: "5cc8ff" }
+        { type: RegionPart, suffix: "-coil", x: -3.5, y: 0, moveX: -0.6, xScl: -1, progress: warmup, heatProgress: heat, heatColor: "5cc8ff" }
+        # Пульсуюче світіння реактора в центрі
+        { type: ShapePart, circle: true, radius: 2.2, radiusTo: 3.6, color: "9ee6ff", colorTo: "ffffff", x: 0, y: -1.5, progress: warmup, layer: 110 }
+        # Іскри біля реактора під час роботи
+        { type: EffectSpawnerPart, x: 0, y: -1.5, width: 5, height: 5, effect: sparkShoot, effectColor: "7fd8ff", effectChance: 0.12, progress: warmup }
+    ]
+}

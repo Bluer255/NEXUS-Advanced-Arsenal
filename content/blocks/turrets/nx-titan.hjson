@@ -1,0 +1,102 @@
+# NEXUS Titan - важка кінетична турель. Масивний бронебійний снаряд, повільна стрільба,
+# потужна віддача ствола і спалах. Графіт - базовий снаряд; торій - бронепробивний. Тир 2.
+type: ItemTurret
+name: "NEXUS Titan"
+description: "Heavy kinetic cannon firing armor-piercing slugs."
+category: turret
+requirements: ["copper/200", "graphite/180", "titanium/120", "silicon/80"]
+research: { parent: ripple }
+size: 3
+scaledHealth: 260
+range: 208
+reload: 90
+rotateSpeed: 3.5
+shootCone: 8
+inaccuracy: 0.5
+recoil: 5
+recoilTime: 70
+shootY: 12
+shake: 3
+targetAir: false
+targetGround: true
+shootSound: shootTank
+heatColor: "ff8a2e"
+coolantMultiplier: 8
+consumes: { coolant: { amount: 0.15 } }
+# Невеликий "розгін" перед пострілом
+shoot: { firstShotDelay: 14 }
+shootEffect: [
+    shootBigSmoke
+    {
+        particles: 12, line: true, length: 46, baseLength: 4, lifetime: 24, cone: 28
+        strokeFrom: 3, strokeTo: 0, lenFrom: 10, lenTo: 2
+        colorFrom: "ffe0a0", colorTo: "ff7a1f"
+    }
+    {
+        particles: 1, length: 0, lifetime: 12, sizeFrom: 16, sizeTo: 0
+        colorFrom: "fff2cc", colorTo: "ff9a3c"
+    }
+]
+smokeEffect: shootSmokeTitan
+ammoTypes: {
+    graphite: {
+        type: BasicBulletType
+        speed: 6.5
+        damage: 160
+        lifetime: 32
+        width: 13
+        height: 26
+        knockback: 1.2
+        pierce: true
+        pierceCap: 2
+        backColor: "ea8a40"
+        frontColor: "fff2cc"
+        trailColor: "ff9a3c"
+        trailLength: 14
+        trailWidth: 2.6
+        hitColor: "ff9a3c"
+        hitEffect: blastExplosion
+        splashDamage: 25
+        splashDamageRadius: 24
+        buildingDamageMultiplier: 0.5
+        chargeEffect: lightningShoot
+        ammoMultiplier: 2
+    }
+    thorium: {
+        type: BasicBulletType
+        speed: 7
+        damage: 230
+        lifetime: 30
+        width: 15
+        height: 30
+        knockback: 2
+        pierce: true
+        pierceCap: 3
+        pierceArmor: true
+        backColor: "ff7a1f"
+        frontColor: "ffffff"
+        trailColor: "ffb050"
+        trailLength: 18
+        trailWidth: 3
+        hitColor: "ffb050"
+        hitEffect: [ titanExplosion, titanSmoke ]
+        splashDamage: 40
+        splashDamageRadius: 30
+        despawnShake: 4
+        reloadMultiplier: 0.8
+        buildingDamageMultiplier: 0.5
+        ammoMultiplier: 1
+    }
+}
+drawer: {
+    type: DrawTurret
+    parts: [
+        # Масивний ствол: віддача назад + нагрів
+        { type: RegionPart, suffix: "-barrel", x: 0, y: 3.5, moveY: -1.9, progress: recoil, heatProgress: heat, heatColor: "ff8a2e" }
+        # Бічні бронеплити розходяться при заряджанні та пострілі
+        { type: RegionPart, suffix: "-plate", x: 9, y: 0.5, moveX: 0.9, progress: warmup, heatProgress: heat, heatColor: "ff8a2e" }
+        { type: RegionPart, suffix: "-plate", x: -9, y: 0.5, moveX: -0.9, xScl: -1, progress: warmup, heatProgress: heat, heatColor: "ff8a2e" }
+        # Помаранчевий енергетичний елемент на казенній частині
+        { type: ShapePart, sides: 4, radius: 1.6, radiusTo: 2.6, color: "ff8a2e", colorTo: "ffe0a0", rotation: 45, x: 0, y: -7.5, progress: warmup, layer: 110 }
+    ]
+}
